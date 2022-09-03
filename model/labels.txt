@@ -1,0 +1,2 @@
+0 Flash
+1 No Flash
