@@ -1,12 +1,15 @@
 
 from time import time
 
-import cv2 as cv
 import numpy as np
+import serial
 import win32con
 import win32gui
 import win32ui
 from PIL import Image
+
+# open a serial connection
+s = serial.Open('COM3', 188239)
 
 import flash_detector as fd
 
@@ -43,10 +46,7 @@ while True:
   ssToPILImg = Image.fromarray(ssWithoutAlpha)
   reshapedImg = fd.reshapeImage(ssToPILImg)
   prediction = fd.predict(model, reshapedImg)
-  if prediction == 0: #flash
-    print("flash")
-  print('FPS {}'.format(1 / (time() - loopTime)))
-  loopTime = time()
-  if cv.waitKey(1) == ord('q'):
-    cv.destroyAllWindows()
-    break
+  if not prediction:
+    serial.write(b"on\n")
+  else:
+    serial.write(b"off\n")

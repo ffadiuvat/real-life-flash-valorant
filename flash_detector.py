@@ -18,7 +18,6 @@ def reshapeImage(image):
 def predict(model, data):
   prediction = model.predict(data)
   flash = prediction[0][0]
-  noFlash = prediction[0][1]
-  if flash >= noFlash:
+  if flash >= 0.5:
     return 0
   return 1
